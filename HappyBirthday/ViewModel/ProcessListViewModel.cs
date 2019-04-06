@@ -116,7 +116,7 @@ namespace HappyBirthday.ViewModel
             {
 
                 case "Name":
-                    MessageBox.Show("Govno ebanoe");
+                    
                     processes.Sort((process, process1) => String.Compare(process.Name, process1.Name, StringComparison.Ordinal));
                     break;
                 case "Id":
