@@ -7,7 +7,7 @@ using HappyBirthdate.Day.Annotations;
 
 namespace HappyBirthday.Model
 {
-    [Serializable]
+   
     class MyThread
     {
 

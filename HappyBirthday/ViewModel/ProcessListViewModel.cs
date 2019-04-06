@@ -1,18 +1,15 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Timers;
 using System.Windows;
+using CSharpPractice5.Tools;
 using HappyBirthdate.Day.Annotations;
 using HappyBirthday.Model;
-using HappyBirthday.Tools;
-using Timer = System.Timers.Timer;
+
 
 namespace HappyBirthday.ViewModel
 {
@@ -25,7 +22,7 @@ namespace HappyBirthday.ViewModel
 
         public ObservableCollection<MyProcess> ProcessesList
         {
-            get { return _users; }
+            get => _users;
             set
             {
                 _users = value;
@@ -33,7 +30,7 @@ namespace HappyBirthday.ViewModel
             }
         }
 
-        private static Timer timer;
+      
 
         private RelayCommand<object> _exitProcess;
         private RelayCommand<object> _sortCommand;
@@ -41,25 +38,10 @@ namespace HappyBirthday.ViewModel
 
         private string _sortBy;
 
-        private bool _nameSort;
-        private bool _idSort;
-        private bool _activeSort;
-        private bool _cpuSort;
-        private bool _ramPercentSort;
-        private bool _ramVolumeSort;
-        private bool _threadsNumSort;
-        private bool _userSort;
-        private bool _startDateSort;
-
+       
         internal ProcessListViewModel()
         {
-            //timer = new System.Timers.Timer();
-            //timer.Interval = 4000;
-
-            //timer.Elapsed += RefreshDate;
-            //timer.AutoReset = true;
-            //timer.Enabled = true;
-
+    
 
             Process[] processes = Process.GetProcesses();
             ProcessesList = new ObservableCollection<MyProcess>();
@@ -102,20 +84,16 @@ namespace HappyBirthday.ViewModel
             }
         }
 
-        public RelayCommand<object> OpenFolderCommand
-        {
-            get
-            {
-                return _openFolderCommand ?? (_openFolderCommand = new RelayCommand<object>(
-                           OpenFolder));
-            }
-        }
+        public RelayCommand<object> OpenFolderCommand =>
+            _openFolderCommand ?? (_openFolderCommand = new RelayCommand<object>(
+                OpenFolder));
+
         private void OpenFolder(object obj)
         {
             try
             {
 
-                string correctPath = SelectedProcess.Path;
+                var correctPath = SelectedProcess.Path;
                 
                 
                 Process.Start(correctPath.Substring(0, correctPath.LastIndexOf('\\')));
@@ -126,16 +104,10 @@ namespace HappyBirthday.ViewModel
             }
         }
 
-        public RelayCommand<object> SortCommand
-        {
-            
-            get
-            {
-              
-                return _sortCommand ?? (_sortCommand = new RelayCommand<object>(
-                           Sort));
-            }
-        }
+        public RelayCommand<object> SortCommand =>
+            _sortCommand ?? (_sortCommand = new RelayCommand<object>(
+                Sort));
+
         private void Sort(object obj)
         {
           

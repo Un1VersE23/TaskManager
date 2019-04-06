@@ -1,11 +1,11 @@
 ﻿
-using System;
+
 using System.Diagnostics;
 using HappyBirthdate.Day.Annotations;
 
 namespace HappyBirthday.Model
 {
-    [Serializable]
+    
     class Module
     {
         private readonly ProcessModule _module;

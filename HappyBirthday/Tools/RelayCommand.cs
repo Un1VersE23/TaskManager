@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace HappyBirthday.Tools
+namespace CSharpPractice5.Tools
 {
     public class RelayCommand<T> : ICommand
     {
@@ -11,12 +11,11 @@ namespace HappyBirthday.Tools
         #endregion
 
         #region Constructors
-        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance/&gt;.
+        /// Initializes a new instance/>.
         /// </summary>
         /// <param name="execute">Delegate to execute when Execute is called on the command.  This can be null to just hook up a CanExecute delegate.</param>
-        /// <remarks><seealso cref="M:HappyBirthday.Tools.RelayCommand`1.CanExecute(System.Object)" /> will always return true.</remarks>
+        /// <remarks><seealso cref="CanExecute"/> will always return true.</remarks>
         public RelayCommand(Action<T> execute)
             : this(execute, null)
         {
@@ -29,7 +28,8 @@ namespace HappyBirthday.Tools
         /// <param name="canExecute">The execution status logic.</param>
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            if (execute == null) throw new ArgumentNullException(nameof(execute));
+            _execute = execute;
             _canExecute = canExecute;
         }
 

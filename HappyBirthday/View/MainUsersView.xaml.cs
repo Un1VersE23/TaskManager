@@ -19,25 +19,6 @@ namespace HappyBirthday.View
 
        
 
-        private void UserListView_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void DataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void UserListView_Loaded_1(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        //protected override void OnClosing(CancelEventArgs e)
-        //{
-        //    base.OnClosing(e);
-        //    StationManager.CloseApp();
-        //}
+       
     }
 }

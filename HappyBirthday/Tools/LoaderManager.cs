@@ -1,8 +1,9 @@
-﻿using System.Windows;
+﻿
+using System.Windows;
 
 namespace HappyBirthday.Tools
 {
-    internal class LoaderManager
+    class LoaderManager
     {
         private static readonly object Locker = new object();
         private static LoaderManager _instance;

@@ -14,14 +14,13 @@ namespace HappyBirthday.Model
     [Serializable]
     internal class MyProcess
     {
-        private  readonly Process _process;
-
         readonly dynamic _extraProcessInfo;
 
 
-        public Process Process => _process;
-        public string Name => _process.ProcessName;
-        public int Id => _process.Id;
+        public Process Process { get; }
+
+        public string Name => Process.ProcessName;
+        public int Id => Process.Id;
         public string UserName => _extraProcessInfo.Username;
 
         public string Path => _extraProcessInfo.Path;
@@ -30,40 +29,36 @@ namespace HappyBirthday.Model
         {
            get
             {
-        //        try
-        //        {
-        //            return _process.StartTime;
-        //        }
-        //        catch (Win32Exception)
-        //        {
+                try
+                {
+                    return Process.StartTime;
+                }
+                catch (Win32Exception)
+                {
                     return DateTime.Now;
-                   //}
+                }
 
             }
         }
 
 
-        public string IsActive => (_process.Responding ? "Responding" : "Not responding");
+        public string IsActive => (Process.Responding ? "Responding" : "Not responding");
 
-        private static DateTime lastTime;
-        private static TimeSpan lastTotalProcessorTime;
-        private static DateTime curTime;
-        private static TimeSpan curTotalProcessorTime;
 
         public double Cpu
         {
             get
             {
-                PerformanceCounter CpuCounter = new PerformanceCounter("Process", "% Processor Time", _process.ProcessName);
-                CpuCounter.NextValue();
-                return CpuCounter.NextValue();
+                PerformanceCounter cpuCounter = new PerformanceCounter("Process", "% Processor Time", Process.ProcessName);
+                cpuCounter.NextValue();
+                return cpuCounter.NextValue();
             }
-           
+
         }
 
 
-        public string  Memory => BytesToReadableValue(_process.PrivateMemorySize64);
-        public int NumOfThreads => _process.Threads.Count;
+        public string  Memory => BytesToReadableValue(Process.PrivateMemorySize64);
+        public int NumOfThreads => Process.Threads.Count;
 
         private ObservableCollection<MyThread> _threads;
 
@@ -92,15 +87,15 @@ namespace HappyBirthday.Model
 
         internal MyProcess([NotNull] Process process)
         {
-            _process = process;
-            _extraProcessInfo = GetProcessExtraInformation(_process.Id);
+            Process = process;
+            _extraProcessInfo = GetProcessExtraInformation(Process.Id);
         }
 
         internal void RefreshModules()
         {
             if (_modules == null)
                 _modules = new ObservableCollection<Module>();
-            foreach (ProcessModule pm in _process.Modules)
+            foreach (ProcessModule pm in Process.Modules)
             {
                 _modules.Add(new Module(pm));
             }
@@ -110,7 +105,7 @@ namespace HappyBirthday.Model
         {
             if (_threads == null)
                 _threads = new ObservableCollection<MyThread>();
-            foreach (ProcessThread pt in _process.Threads)
+            foreach (ProcessThread pt in Process.Threads)
             {
                 _threads.Add(new MyThread(pt));
             }
@@ -118,11 +113,11 @@ namespace HappyBirthday.Model
 
         public string BytesToReadableValue(long number)
         {
-            List<string> suffixes = new List<string> { " B", " KB", " MB", " GB", " TB", " PB" };
+            var suffixes = new List<string> { " B", " KB", " MB", " GB", " TB", " PB" };
 
-            for (int i = 0; i < suffixes.Count; i++)
+            for (var i = 0; i < suffixes.Count; i++)
             {
-                long temp = number / (int)Math.Pow(1024, i + 1);
+                var temp = number / (int)Math.Pow(1024, i + 1);
 
                 if (temp == 0)
                 {
@@ -135,12 +130,12 @@ namespace HappyBirthday.Model
 
         public static ExpandoObject GetProcessExtraInformation(int processId)
         {
-            // Query the Win32_Process
-            string query = "Select * From Win32_Process Where ProcessID = " + processId;
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
-            ManagementObjectCollection processList = searcher.Get();
+           
+            var query = "Select * From Win32_Process Where ProcessID = " + processId;
+            var searcher = new ManagementObjectSearcher(query);
+            var processList = searcher.Get();
 
-            // Create a dynamic object to store some properties on it
+            
             dynamic response = new ExpandoObject();
             response.Path = "Unknown";
             response.Username = "Unknown";
